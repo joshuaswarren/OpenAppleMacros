@@ -21,7 +21,7 @@ enum PreviewScaffold {
         in context: some MacroExpansionContext,
         invocation: String
     ) -> DeclSyntax {
-        let location = context.location(of: Syntax(node), at: .afterLeadingTrivia, filePathMode: .fileID)!
+        let location = context.location(of: Syntax(node.poundToken), at: .afterLeadingTrivia, filePathMode: .fileID)!
         let name = context.makeUniqueName("PreviewRegistry")
         return """
         @available(iOS 17.0, macOS 14.0, tvOS 17.0, visionOS 1.0, watchOS 10.0, *)
@@ -43,12 +43,13 @@ enum PreviewScaffold {
         """
     }
 
-    /// Rewrites `#Preview...` to `DeveloperToolsSupport.Preview...`.
+    /// Rewrites `#Preview...` to `DeveloperToolsSupport.Preview...`, dropping any
+    /// attributes (e.g. `@available`) attached to the macro declaration.
     static func replaceMacroName(_ node: some FreestandingMacroExpansionSyntax) -> String {
         let text = node.trimmed.description
         let macroName = node.macro.trimmed.text
-        guard text.hasPrefix("#" + macroName) else { return text }
-        return "DeveloperToolsSupport.Preview" + text.dropFirst(1 + macroName.count)
+        guard let hashRange = text.range(of: "#" + macroName) else { return text }
+        return "DeveloperToolsSupport.Preview" + String(text[hashRange.upperBound...])
     }
 
     /// Re-indents every line of the invocation into the body of `makePreview()`.
