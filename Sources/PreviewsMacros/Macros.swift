@@ -50,7 +50,7 @@ enum PreviewScaffold {
         let macroName = node.macro.trimmed.text
         guard let hashIndex = text.firstIndex(of: "#"),
               text[hashIndex...].hasPrefix("#" + macroName) else { return text }
-        return "DeveloperToolsSupport.Preview" + String(text[text.index(after: hashIndex)...])
+        return "DeveloperToolsSupport.Preview" + String(text[text.index(hashIndex, offsetBy: 1 + macroName.count)...])
     }
 
     /// Re-indents every line of the invocation into the body of `makePreview()`.
