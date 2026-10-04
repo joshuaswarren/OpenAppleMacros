@@ -27,8 +27,7 @@ struct MyWidget: Widget {
 }
 
 #Preview(as: .systemLarge, widget: {
-    MyWidget()
-        .padding()
+        MyWidget()
 }, timelineProvider: {
     SimpleProvider()
 })
