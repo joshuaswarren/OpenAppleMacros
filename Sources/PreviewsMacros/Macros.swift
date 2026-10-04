@@ -48,7 +48,7 @@ enum PreviewScaffold {
     static func replaceMacroName(_ node: some FreestandingMacroExpansionSyntax) -> String {
         let text = node.trimmed.description
         let macroName = node.macro.trimmed.text
-        guard let hashRange = text.range(of: "#" + macroName) else { return text }
+        guard let hashRange = text.firstRange(of: "#" + macroName) else { return text }
         return "DeveloperToolsSupport.Preview" + String(text[hashRange.upperBound...])
     }
 
