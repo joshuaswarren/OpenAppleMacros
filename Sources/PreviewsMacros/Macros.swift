@@ -61,11 +61,6 @@ enum PreviewScaffold {
             .joined(separator: "\n")
     }
 
-    static func stringLiteral(_ value: String) -> String {
-        let data = try! JSONSerialization.data(withJSONObject: value, options: [.fragmentsAllowed])
-        return String(decoding: data, as: UTF8.self)
-    }
-
     static func trimmedWhitespace(_ text: some StringProtocol) -> String {
         String(text.drop(while: { $0 == " " || $0 == "\t" }).reversed().drop(while: { $0 == " " || $0 == "\t" }).reversed())
     }
