@@ -24,7 +24,7 @@ enum PreviewScaffold {
         let location = context.location(of: Syntax(node.poundToken), at: .afterLeadingTrivia, filePathMode: .fileID)!
         let name = context.makeUniqueName("PreviewRegistry")
         return """
-        /*BEGIN*/
+        @available(iOS 17.0, macOS 14.0, tvOS 17.0, visionOS 1.0, watchOS 10.0, *)
         nonisolated struct \(name): DeveloperToolsSupport.PreviewRegistry {
             static var fileID: String {
                 \(location.file)
@@ -151,7 +151,6 @@ struct SwiftUIView: DeclarationMacro {
         in context: some MacroExpansionContext
     ) throws -> [DeclSyntax] {
         let text = PreviewScaffold.replaceMacroName(node)
-        context.diagnose(Diagnostic(node: Syntax(node), message: SwiftDataDiagnostic("TEXT=[" + text + "]")))
         guard let openBrace = firstTrailingClosureBrace(in: text),
               text.hasSuffix("}") else {
             return [PreviewScaffold.expansion(of: node, in: context, invocation: PreviewScaffold.invocationWithSplitInlineClosures(node))]
