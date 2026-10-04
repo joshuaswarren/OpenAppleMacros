@@ -67,7 +67,7 @@ Applies to `AppKit`, `SwiftUI`, `UIKit`, `WidgetKit`
 
 | Macro | Status | Notes |
 | - | - | - |
-| `@Preview` | 🌗 | Expands to empty output |
+| `@Preview` | ✅ | SwiftUI, UIKit, and WidgetKit forms; expands to a `PreviewRegistry` stub |
 | `@Previewable` | 🌗 | Expands to empty output |
 
 ### ❌ StateReporting
