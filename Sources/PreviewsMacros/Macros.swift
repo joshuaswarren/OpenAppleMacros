@@ -151,6 +151,7 @@ struct SwiftUIView: DeclarationMacro {
         in context: some MacroExpansionContext
     ) throws -> [DeclSyntax] {
         let text = PreviewScaffold.replaceMacroName(node)
+        context.diagnose(Diagnostic(node: Syntax(node), message: SwiftDataDiagnostic("TEXT=[" + text + "]")))
         guard let openBrace = firstTrailingClosureBrace(in: text),
               text.hasSuffix("}") else {
             return [PreviewScaffold.expansion(of: node, in: context, invocation: PreviewScaffold.invocationWithSplitInlineClosures(node))]
