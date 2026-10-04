@@ -81,9 +81,8 @@ enum PreviewScaffold {
 
     private static func splitInlineClosures(in line: String) -> String {
         let indent = line.prefix(while: { $0 == " " }).count
-        let base = String(repeating: " ", count: indent)
         var results: [String] = []
-        var buffer = base
+        var buffer = ""
         var index = line.startIndex
         var parenDepth = 0
         var braceDepth = 0
