@@ -156,7 +156,13 @@ struct SwiftUIView: DeclarationMacro {
         let head = PreviewScaffold.trimmedWhitespace(text[..<openBrace])
         let body = String(text[text.index(after: openBrace)...].dropLast())
 
-        let bodyLines = body.split(separator: "\n", omittingEmptySubsequences: false)
+        var bodyLines = body.split(separator: "\n", omittingEmptySubsequences: false)
+        while let first = bodyLines.first, PreviewScaffold.trimmedWhitespace(first).isEmpty {
+            bodyLines.removeFirst()
+        }
+        while let last = bodyLines.last, PreviewScaffold.trimmedWhitespace(last).isEmpty {
+            bodyLines.removeLast()
+        }
         let baseIndent = bodyLines.first.map { $0.prefix(while: { $0 == " " }).count } ?? 0
         let reindented = bodyLines.map { line -> String in
             if PreviewScaffold.trimmedWhitespace(line).isEmpty { return "" }
