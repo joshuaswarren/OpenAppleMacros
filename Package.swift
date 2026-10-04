@@ -11,6 +11,20 @@ let macroTargets: [Target] = [
         ],
     ),
     .target(
+        name: "FoundationMacros",
+        dependencies: [
+            "OpenAppleMacrosBase",
+            .product(name: "SwiftDiagnostics", package: "swift-syntax"),
+            .product(name: "SwiftSyntaxBuilder", package: "swift-syntax"),
+            .product(name: "SwiftIfConfig", package: "swift-syntax"),
+        ],
+        swiftSettings: [
+            // Match the Darwin Foundation build of swift-foundation's macros so
+            // they emit `Foundation`-qualified symbols.
+            .define("FOUNDATION_FRAMEWORK"),
+        ],
+    ),
+    .target(
         name: "PreviewsMacros",
         dependencies: ["OpenAppleMacrosBase"],
     ),
