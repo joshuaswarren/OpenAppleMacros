@@ -66,6 +66,10 @@ enum PreviewScaffold {
         return String(decoding: data, as: UTF8.self)
     }
 
+    static func trimmedWhitespace(_ text: some StringProtocol) -> String {
+        String(text.drop(while: { $0 == " " || $0 == "\t" }).reversed().drop(while: { $0 == " " || $0 == "\t" }).reversed())
+    }
+
     /// Emits the invocation for forms using labeled inline closure arguments
     /// (`widget: { ... }, timelineProvider: { ... }`). Every pre-existing line is
     /// re-indented by 8; closures written inline on one line are split onto their
@@ -126,7 +130,7 @@ enum PreviewScaffold {
                 buffer.append(character)
                 results.append(buffer)
                 let content = String(line[line.index(after: index)..<contentEnd])
-                results.append(String(repeating: " ", count: indent + 8) + content.trimmingCharacters(in: .whitespaces))
+                results.append(String(repeating: " ", count: indent + 8) + PreviewScaffold.trimmedWhitespace(content))
                 buffer = String(repeating: " ", count: indent + 4) + "}"
                 index = closeIndex
             case "}":
@@ -155,13 +159,13 @@ struct SwiftUIView: DeclarationMacro {
               text.hasSuffix("}") else {
             return [PreviewScaffold.expansion(of: node, in: context, invocation: PreviewScaffold.invocationWithSplitInlineClosures(node))]
         }
-        let head = String(text[..<openBrace]).trimmingCharacters(in: CharacterSet(charactersIn: " \t"))
+        let head = PreviewScaffold.trimmedWhitespace(text[..<openBrace])
         let body = String(text[text.index(after: openBrace)...].dropLast())
 
         let bodyLines = body.split(separator: "\n", omittingEmptySubsequences: false)
         let baseIndent = bodyLines.first.map { $0.prefix(while: { $0 == " " }).count } ?? 0
         let reindented = bodyLines.map { line -> String in
-            if line.trimmingCharacters(in: .whitespaces).isEmpty { return "" }
+            if PreviewScaffold.trimmedWhitespace(line).isEmpty { return "" }
             let indent = line.prefix(while: { $0 == " " }).count
             let target = 16 + (indent - baseIndent)
             return String(repeating: " ", count: max(target, 0)) + line.drop(while: { $0 == " " })
