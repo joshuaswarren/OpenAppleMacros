@@ -24,6 +24,7 @@ enum PreviewScaffold {
         let location = context.location(of: Syntax(node.poundToken), at: .afterLeadingTrivia, filePathMode: .fileID)!
         let name = context.makeUniqueName("PreviewRegistry")
         return """
+        /*BEGIN*/
         nonisolated struct \(name): DeveloperToolsSupport.PreviewRegistry {
             static var fileID: String {
                 \(location.file)
