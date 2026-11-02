@@ -106,3 +106,7 @@ Applies to `AppKit`, `SwiftUI`, `UIKit`, `WidgetKit`
 | - | - | - |
 | `@Parameter` | ❌ | |
 | `@Rule` | ❌ | |
+
+## Contributors
+
+Everyone credited so far: [CONTRIBUTORS.md](CONTRIBUTORS.md).
